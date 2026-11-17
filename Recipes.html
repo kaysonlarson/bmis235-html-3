@@ -28,12 +28,24 @@
     <a href="Groceries.html"><img src="img/page3.png" alt="Page 3"></a>
 </nav>
 
-<h1>Page 2</h1>
-<p>This is page 2. It covers the second part of your idea.</p>
-<p>Write about it here.</p>
+<a href="index.html">← Back to my fridge</a>
 
-<!-- Footer: fill in your name -->
-<footer>Built by YOUR NAME &middot; BMIS 235</footer>
+<script>
+  function showIngredients() {
+    const summary = document.getElementById("basket-summary");
+    let ingredients = [];
 
-</body>
-</html>
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem("fridge-raid-ingredients-v1") || "[]"
+      );
+      if (Array.isArray(saved)) ingredients = saved;
+    } catch {}
+
+    summary.textContent = ingredients.length
+      ? "In your bin: " + ingredients.join(", ")
+      : "Your bin is empty. Open the fridge and pick some ingredients.";
+  }
+
+  window.addEventListener("pageshow", showIngredients);
+</script>
