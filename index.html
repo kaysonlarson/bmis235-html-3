@@ -37,245 +37,367 @@
      graphic BETWEEN the opening <div> and the closing </div> below.
      ===================================================================== -->
 <div class="showcase">
-  <!-- HTML: fridge, ingredient shelves, and selection basket -->
-  <section class="kitchen" aria-label="Fridge Raid ingredient picker">
-    <div class="scene">
-      <div class="fridge">
-        <div class="inside" hidden>
-          <div class="light"></div>
-          <div class="shelves"></div>
-          <div class="controls">
-            <button type="button" class="prev" aria-label="Previous shelves">‹</button>
-            <span class="page"></span>
-            <button type="button" class="next" aria-label="Next shelves">›</button>
-          </div>
-          <button type="button" class="close">Close fridge</button>
+  <!-- HTML: the fridge, its shelves, and the ingredient bin -->
+  <section class="raid" aria-label="Fridge Raid kitchen">
+    <div class="kitchen-scene">
+      <div class="appliance">
+        <div class="freezer">
+          <span class="silver-handle"></span>
+          <span class="fridge-name">Fridge Raid</span>
         </div>
 
-        <button type="button" class="door" aria-label="Open fridge">
-          <span class="brand">Fridge Raid</span>
-          <span class="note">what’s for<br>dinner?</span>
-          <span class="handle"></span>
-          <span class="open-label">Open fridge ›</span>
-        </button>
+        <div class="compartment">
+          <div class="interior" inert>
+            <div class="fridge-light"></div>
+            <div class="shelves"></div>
+            <div class="shelf-controls">
+              <button type="button" class="back" aria-label="Previous shelves">‹</button>
+              <span class="page-count"></span>
+              <button type="button" class="next" aria-label="Next shelves">›</button>
+              <button type="button" class="shut">Close</button>
+            </div>
+          </div>
+
+          <button type="button" class="fridge-door"
+                  aria-label="Open fridge" aria-expanded="false">
+            <span class="silver-handle"></span>
+            <span class="shopping-note">milk<br>eggs<br>butter</span>
+            <span class="star-magnet">★</span>
+          </button>
+        </div>
       </div>
 
-      <div class="basket">
-        <strong>My basket</strong>
-        <span class="count">Drop food here</span>
-        <div class="picked"></div>
+      <div class="crate" aria-label="Ingredient bin">
+        <strong>My ingredients</strong>
+        <div class="basket-food"></div>
+        <span class="basket-count">Drop food here</span>
       </div>
     </div>
-    <div class="hint" aria-live="polite">Open the fridge to get started.</div>
+    <div class="game-hint" aria-live="polite">
+      Grab the lower handle and pull right →
+    </div>
   </section>
 
-  <!-- CSS: kitchen colors, opening door, shelves, and basket -->
+  <!-- CSS: the blue enamel fridge, tile wall, illustrated food, and wooden bin -->
   <style>
-    .showcase .kitchen {
-      max-width: 620px;
+    .showcase .raid {
+      max-width: 650px;
       margin: 12px auto;
       overflow: hidden;
-      border: 3px solid #554639;
-      border-radius: 20px;
-      background: #fff5dd;
-      color: #493b32;
-      font: bold 15px/1.2 "Trebuchet MS", sans-serif;
+      color: #463d35;
+      background: #fff4dd;
+      border: 3px solid #504c43;
+      border-radius: 18px;
+      font: bold 14px/1.2 "Trebuchet MS", sans-serif;
     }
-    .showcase .kitchen * { box-sizing: border-box; }
-    .showcase .kitchen [hidden] { display: none; }
-    .showcase .scene {
+    .showcase .raid * { box-sizing: border-box; }
+    .showcase .kitchen-scene {
       display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      gap: 12px;
-      padding: 14px 10px;
+      grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
       align-items: end;
+      gap: clamp(8px, 3vw, 22px);
+      padding: 14px 12px;
       background:
-        linear-gradient(to top, #c99670 0 13%, transparent 13%),
-        repeating-linear-gradient(90deg, #faead7 0 32px, #eedbc6 32px 34px);
+        linear-gradient(to top, #bd916e 0 13%, transparent 13%),
+        repeating-linear-gradient(0deg, transparent 0 34px, #c5d7d0 34px 37px),
+        repeating-linear-gradient(90deg, #e7f0e9 0 40px, #c5d7d0 40px 43px);
     }
-    .showcase .fridge {
+    .showcase .appliance {
+      width: 100%;
+      max-width: 272px;
+      justify-self: center;
+      padding: 3px;
+      background: #657989;
+      border: 2px solid #465664;
+      border-radius: 21px 21px 12px 12px;
+      box-shadow: 3px 5px #6e594648;
+    }
+    .showcase .freezer, .showcase .fridge-door {
+      background: linear-gradient(110deg, #c6e5f3, #a4cbe3 72%, #95bcd6);
+      box-shadow: inset 3px 3px #dcedf5, inset -3px -3px #83a9c2;
+    }
+    .showcase .freezer {
       position: relative;
-      height: 320px;
-      perspective: 800px;
-      border: 3px solid #52685b;
-      border-radius: 20px;
-      background: #cbded1;
-      box-shadow: 3px 4px #725e4b44;
+      height: 70px;
+      margin-bottom: 4px;
+      border-radius: 15px 15px 7px 7px;
     }
-    .showcase .door {
+    .showcase .fridge-name {
+      position: absolute;
+      top: 12px;
+      right: 10px;
+      color: #526a7b;
+      font: italic bold 15px Georgia, serif;
+    }
+    .showcase .silver-handle {
+      position: absolute;
+      left: 9%;
+      top: 13px;
+      width: 30px;
+      height: 11px;
+      border: 2px solid #4b626f;
+      border-radius: 5px;
+      background: linear-gradient(#e3edf1, #90a7b5);
+      box-shadow: 1px 2px #728c9d;
+    }
+    .showcase .freezer .silver-handle { top: auto; bottom: 12px; }
+    .showcase .compartment {
+      position: relative;
+      height: 254px;
+      perspective: 700px;
+      border-radius: 8px;
+      background: #dce9df;
+    }
+    .showcase .fridge-door {
       position: absolute;
       inset: 0;
       width: 100%;
       border: 0;
-      border-radius: 16px;
-      color: #354e43;
-      background: linear-gradient(110deg, #d8efd7, #a4cbb3 75%, #84ad99);
-      box-shadow: inset 3px 3px #eff7df, inset -3px -3px #79a58f;
-      cursor: pointer;
-      transform-origin: left;
-      transition: transform .4s, opacity .4s;
-    }
-    .showcase .kitchen.open .door {
-      transform: rotateY(-95deg);
-      opacity: 0;
-      pointer-events: none;
-    }
-    .showcase .brand {
-      position: absolute;
-      top: 12%; left: 10%;
-      font: bold italic clamp(17px, 4vw, 28px) Georgia, serif;
-    }
-    .showcase .note {
-      position: absolute;
-      top: 38%; left: 14%;
-      padding: 12px 8px 7px;
-      transform: rotate(-8deg);
-      background: #ffe4a2;
-      box-shadow: 2px 3px #52735e44;
-      font: italic 16px Georgia, serif;
-    }
-    .showcase .note::before {
-      content: "";
-      position: absolute;
-      top: -5px; left: 42%;
-      width: 13px; height: 13px;
-      border-radius: 50%;
-      background: #d86450;
-    }
-    .showcase .handle {
-      position: absolute;
-      top: 40%; right: 10%;
-      height: 60px; width: 11px;
-      border: 2px solid #59675b;
-      border-radius: 7px;
-      background: #fff0cc;
-    }
-    .showcase .open-label {
-      position: absolute;
-      bottom: 10%; left: 0;
-      width: 100%;
-      font: bold 14px "Trebuchet MS", sans-serif;
-    }
-    .showcase .inside { padding: 8px 6px; text-align: center; }
-    .showcase .light {
-      width: 34px; height: 6px;
-      margin: 0 auto;
-      border-radius: 6px;
-      background: #fffbc7;
-      box-shadow: 0 1px 10px #fff9aa;
-    }
-    .showcase .shelf {
-      height: 74px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: end;
-      border-bottom: 5px solid #83ab9c;
-      box-shadow: 0 2px #59776a;
-    }
-    .showcase .food {
-      padding: 2px 0;
-      border: 0;
-      background: transparent;
-      color: #413b34;
-      font: bold 12px/1.1 "Trebuchet MS", sans-serif;
+      border-radius: 8px;
+      transform-origin: right center;
+      cursor: grab;
       touch-action: none;
       user-select: none;
-      cursor: grab;
     }
-    .showcase .food .art { display: block; font-size: 32px; }
-    .showcase .food[aria-pressed="true"] { opacity: .45; }
-    .showcase .controls {
+    .showcase .fridge-door:active, .showcase .ingredient:active { cursor: grabbing; }
+    .showcase .shopping-note {
+      position: absolute;
+      top: 32%;
+      left: 32%;
+      padding: 9px 12px;
+      transform: rotate(-8deg);
+      background: #fff1b9;
+      box-shadow: 2px 2px #7895a4;
+      color: #65554a;
+      text-align: left;
+      font: italic 14px Georgia, serif;
+    }
+    .showcase .shopping-note::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 40%;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #dc8271;
+      border: 1px solid #976452;
+    }
+    .showcase .star-magnet {
+      position: absolute;
+      bottom: 20%;
+      right: 18%;
+      color: #f4c071;
+      font-size: 25px;
+      text-shadow: 1px 1px #9b7052;
+    }
+    .showcase .interior { padding: 7px 6px; }
+    .showcase .fridge-light {
+      width: 34px;
+      height: 5px;
+      margin: 0 auto;
+      border-radius: 5px;
+      background: #fff9bd;
+      box-shadow: 0 1px 8px #ffe990;
+    }
+    .showcase .shelf-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: end;
+      height: 66px;
+      border-bottom: 5px solid #90b3ad;
+      box-shadow: 0 2px #6b8983;
+    }
+    .showcase .ingredient {
+      min-width: 0;
+      padding: 0 0 2px;
+      border: 0;
+      background: transparent;
+      color: #403b34;
+      font: bold 10px/1.05 "Trebuchet MS", sans-serif;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+    .showcase .ingredient svg {
+      display: block;
+      width: 100%;
+      max-width: 53px;
+      height: 38px;
+      margin: auto;
+      pointer-events: none;
+    }
+    .showcase .ingredient[aria-pressed="true"] { opacity: .4; }
+    .showcase .shelf-controls {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      margin: 9px 0 4px;
+      gap: 5px;
+      margin-top: 8px;
+      font-size: 11px;
     }
-    .showcase .controls button, .showcase .close {
-      background: #fff5db;
-      border: 1px solid #859486;
-      border-radius: 7px;
-      color: #493b32;
+    .showcase .shelf-controls button {
+      border: 1px solid #86998e;
+      border-radius: 6px;
+      background: #fff4d9;
+      color: #463d35;
+      padding: 3px 7px;
       cursor: pointer;
     }
-    .showcase .controls button { width: 30px; font-size: 18px; }
-    .showcase .basket {
+    .showcase .crate {
+      min-width: 0;
+      padding: 8px 4px;
+      border: 3px solid #805c43;
+      border-radius: 8px 8px 17px 17px;
+      background: repeating-linear-gradient(#e2ae7d 0 17px, #c99668 17px 20px);
+      box-shadow: 2px 4px #785e4548;
       text-align: center;
-      padding: 9px 5px;
-      border: 3px solid #79523e;
-      border-radius: 10px 10px 24px 24px;
-      background: repeating-linear-gradient(#efaf80 0 13px, #df976c 13px 15px);
     }
-    .showcase .basket::before {
+    .showcase .crate::before {
       content: "";
       display: block;
-      width: 60%; height: 27px;
-      margin: -39px auto 8px;
-      border: 5px solid #885f49;
+      width: 55%;
+      height: 24px;
+      margin: -33px auto 6px;
+      border: 5px solid #916c4e;
       border-bottom: 0;
-      border-radius: 35px 35px 0 0;
+      border-radius: 26px 26px 0 0;
     }
-    .showcase .basket.over { background: #ffdf94; outline: 3px dashed #684a34; }
-    .showcase .count { display: block; margin: 4px; font-size: 12px; }
-    .showcase .picked { height: 114px; overflow-y: auto; }
-    .showcase .picked button {
-      margin: 2px;
-      padding: 2px;
+    .showcase .crate.over { outline: 3px dashed #537854; background: #f2c986; }
+    .showcase .basket-food { height: 94px; overflow-y: auto; }
+    .showcase .basket-food button {
+      background: #fff0ce;
       border: 0;
       border-radius: 6px;
-      background: #fff2d9;
-      font-size: 22px;
+      padding: 1px;
+      margin: 2px;
       cursor: pointer;
     }
-    .showcase .hint { padding: 9px; text-align: center; font-size: 13px; }
-    .showcase .drag-food {
+    .showcase .basket-food svg { display: block; width: 30px; height: 26px; }
+    .showcase .basket-count { font-size: 11px; }
+    .showcase .game-hint { padding: 9px; text-align: center; font-size: 13px; }
+    .showcase .drag-picture {
       position: fixed;
+      width: 54px;
+      height: 46px;
       z-index: 9999;
       pointer-events: none;
-      font-size: 40px;
       transform: translate(-50%, -65%);
+      filter: drop-shadow(2px 4px 2px #463d3540);
     }
   </style>
 
-  <!-- JavaScript: move between shelves and drag or tap food into the basket -->
+  <!-- JavaScript: draw the food, drag the door, and move ingredients into the bin -->
   <script>
     (() => {
-      const kitchen = document.currentScript.parentElement.querySelector(".kitchen");
-      const find = selector => kitchen.querySelector(selector);
+      const game = document.currentScript.parentElement.querySelector(".raid");
+      const find = selector => game.querySelector(selector);
+      const door = find(".fridge-door");
+      const bin = find(".crate");
+
+      // Small drawing pieces shared by the ingredient illustrations.
+      const oval = (x,y,rx,ry,color) =>
+        '<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="'+color+'"/>';
+      const shape = (path,color) => '<path d="'+path+'" fill="'+color+'"/>';
+      const rect = (x,y,w,h,color,r=3) =>
+        '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+r+'" fill="'+color+'"/>';
+      const mark = (x,y,text) =>
+        '<text x="'+x+'" y="'+y+'" fill="#493e33" stroke="none" font-family="sans-serif" font-weight="bold" font-size="8" text-anchor="middle">'+text+'</text>';
+      const jar = (body,lid,label) => rect(16,12,32,34,body,6) +
+        rect(15,8,34,9,lid) + rect(17,24,30,13,"#fff0c7") + mark(32,33,label);
+      const bottle = (body,cap,label) => rect(26,4,12,13,cap) +
+        shape("M25 16H39L41 22L46 27V46H18V27L23 22Z",body) +
+        rect(19,29,26,12,"#fff0ca") + mark(32,38,label);
+      const bowl = filling => shape("M5 25H59Q55 46 35 47H28Q10 45 5 25Z","#91bfc2") +
+        oval(32,25,27,8,filling);
+
+      // Each entry is one food you can pick up.
       const foods = [
-        ["Eggs","🥚"], ["Cheese","🧀"], ["Milk","🥛"], ["Butter","🧈"], ["Yogurt","🥣"], ["Berries","🫐"],
-        ["Spinach","🥬"], ["Tomatoes","🍅"], ["Avocado","🥑"], ["Bananas","🍌"], ["Chicken","🍗"], ["Bacon","🥓"],
-        ["Sausage","🌭"], ["Ground beef","🥩"], ["Tortillas","🫓"], ["Bread","🍞"], ["Bagels","🥯"], ["Rice","🍚"],
-        ["Pasta","🍝"], ["Peanut butter","🥜"], ["Jam","🫙"], ["Soy sauce","🍶"], ["Hot sauce","🌶️"], ["Marinara sauce","🥫"]
+        ["Eggs", oval(22,29,12,16,"#e6bd91")+oval(41,25,13,18,"#fff1d6")],
+        ["Cheese", shape("M5 25L40 8L58 17L21 35Z","#ffe581")+
+          shape("M5 25L21 35L58 17V32L21 47L5 40Z","#efb748")+oval(35,30,2,2,"#c38b35")],
+        ["Milk", shape("M15 16L22 6H42L49 16V44L36 48L15 43Z","#fff5d9")+
+          shape("M15 26L36 30L49 25V44L36 48L15 43Z","#8fc5df")+mark(29,39,"MILK")],
+        ["Butter", shape("M4 34L23 23L60 31L40 45Z","#f8ebce")+
+          shape("M13 25L26 15L51 19V31L35 38L13 33Z","#f5c75f")+
+          shape("M13 25L26 15L51 19L35 29Z","#ffe79b")],
+        ["Yogurt", shape("M14 17H50L45 45H20Z","#d7b9db")+oval(32,17,21,6,"#fff2d9")+oval(32,32,5,5,"#b47c99")],
+        ["Berries", oval(19,29,10,9,"#747eab")+oval(32,19,10,9,"#8e9bc1")+oval(44,31,10,9,"#737fa9")+oval(30,38,9,8,"#8893bb")],
+        ["Spinach", shape("M28 45Q-1 36 10 13Q30 10 33 34Q30 6 51 8Q60 30 35 42Z","#7fa765")+
+          shape("M21 46L42 19L27 46Z","#527946")],
+        ["Tomatoes", oval(32,29,23,17,"#e56f59")+shape("M31 19L18 14L28 14L27 8L34 14L46 11L38 18Z","#72975b")],
+        ["Avocado", shape("M24 9Q31 1 39 10L50 29Q60 47 34 48Q8 50 14 31Z","#94ad70")+oval(33,32,13,12,"#e1df94")+oval(34,34,8,8,"#a56e4b")],
+        ["Bananas", shape("M5 16Q27 44 49 22L55 10L59 12Q54 47 28 46Q10 45 5 24Z","#f7d16a")],
+        ["Chicken", shape("M33 27L49 12Q52 4 57 9Q64 15 55 19L39 34Z","#f4dfbc")+oval(24,33,18,13,"#d99358")+oval(19,29,6,3,"#efb779")],
+        ["Bacon", shape("M4 19L17 13L31 18L46 12L59 14L57 23L45 21L31 27L17 22L6 28Z","#cd795e")+
+          shape("M4 32L17 26L31 31L46 25L59 27L57 36L45 34L31 40L17 35L6 41Z","#e3a082")],
+        ["Sausage", shape("M6 27Q24 37 38 22L45 12Q55 6 58 18Q46 46 23 45Q6 44 6 34Z","#bc774e")],
+        ["Ground beef", rect(4,13,56,33,"#e7d0ac",7)+rect(8,17,48,24,"#d58c7e",6)+
+          shape("M13 34Q18 17 23 28T33 27T44 28T52 23","none")],
+        ["Tortillas", oval(32,32,27,11,"#d7b582")+oval(32,27,27,11,"#e8c793")+oval(32,22,27,11,"#f4dca8")+
+          oval(22,21,2,1,"#c59d68")+oval(39,25,2,1,"#c59d68")],
+        ["Bread", shape("M12 24Q4 14 15 9Q32 2 48 9Q60 13 51 24V44H13Z","#c38d5a")+
+          shape("M17 24Q11 17 19 14Q32 9 45 14Q52 17 46 24V39H18Z","#f4d8a2")],
+        ["Bagels", oval(32,29,26,15,"#c18a52")+oval(32,24,26,14,"#e6b374")+oval(32,23,8,4,"#846345")],
+        ["Rice", bowl("#fff2d1")+shape("M15 25l4-1m6-3l4 1m6 3l4-1m5 2l4-1","none")],
+        ["Pasta", bowl("#edca81")+shape("M12 27q5-12 10 0t10-1t10 0t10-1","none")],
+        ["Peanut butter", jar("#bd9468","#d78267","PB")],
+        ["Jam", jar("#b27189","#8ba576","JAM")],
+        ["Soy sauce", bottle("#77594a","#c56350","SOY")],
+        ["Hot sauce", bottle("#d87854","#7c9b6a","HOT")],
+        ["Marinara sauce", jar("#d47e5d","#a4a06e","SAUCE")]
       ];
+
+      const names = foods.map(food => food[0]);
       const selected = new Set();
+      const storageKey = "fridge-raid-ingredients-v1";
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        if (Array.isArray(saved)) saved.forEach(n => { if (names.includes(n)) selected.add(n); });
+      } catch {}
+
       let page = 0;
       let drag = null;
+      const pageTotal = Math.ceil(foods.length / 9);
 
-      function updateBasket() {
-        const picked = find(".picked");
-        picked.replaceChildren();
-        for (const index of selected) {
-          const [name, icon] = foods[index];
-          const item = document.createElement("button");
-          item.type = "button";
-          item.textContent = icon;
-          item.title = "Remove " + name;
-          item.setAttribute("aria-label", item.title);
-          item.onclick = () => selectFood(index, false);
-          picked.append(item);
-        }
-        find(".count").textContent = selected.size ? selected.size + " selected" : "Drop food here";
-        kitchen.querySelectorAll(".food").forEach(item => {
-          item.setAttribute("aria-pressed", selected.has(Number(item.dataset.index)));
+      function picture(index) {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+        svg.setAttribute("viewBox","0 0 64 52");
+        svg.setAttribute("aria-hidden","true");
+        svg.innerHTML = '<g stroke="#634f40" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">' +
+          foods[index][1] + '</g>';
+        return svg;
+      }
+
+      function button(label) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.title = label;
+        b.setAttribute("aria-label",label);
+        return b;
+      }
+
+      function refreshBasket() {
+        const basket = find(".basket-food");
+        basket.replaceChildren();
+        selected.forEach(name => {
+          const b = button("Remove " + name);
+          b.append(picture(names.indexOf(name)));
+          b.onclick = () => pick(name,false);
+          basket.append(b);
+        });
+        find(".basket-count").textContent = selected.size ? selected.size + " selected" : "Drop food here";
+        game.querySelectorAll(".ingredient").forEach(b => {
+          b.setAttribute("aria-pressed",selected.has(b.dataset.name));
         });
       }
 
-      function selectFood(index, add) {
-        if (add) selected.add(index);
-        else selected.delete(index);
-        updateBasket();
-        find(".hint").textContent = foods[index][0] + (add ? " added to your basket." : " removed.");
+      function pick(name,add) {
+        if (add) selected.add(name);
+        else selected.delete(name);
+        refreshBasket();
+        try { localStorage.setItem(storageKey,JSON.stringify([...selected])); } catch {}
+        find(".game-hint").textContent = name + (add ? " added to your bin." : " removed.");
       }
 
       function showShelves() {
@@ -283,96 +405,117 @@
         shelves.replaceChildren();
         for (let row = 0; row < 3; row++) {
           const shelf = document.createElement("div");
-          shelf.className = "shelf";
-          for (let column = 0; column < 2; column++) {
-            const index = page * 6 + row * 2 + column;
-            const [name, icon] = foods[index];
-            const item = document.createElement("button");
-            item.type = "button";
-            item.className = "food";
-            item.dataset.index = index;
-            const art = document.createElement("span");
-            art.className = "art";
-            art.setAttribute("aria-hidden", "true");
-            art.textContent = icon;
-            item.append(art, name);
-            item.onclick = () => selectFood(index, !selected.has(index));
-            shelf.append(item);
-          }
+          shelf.className = "shelf-row";
+          const start = page * 9 + row * 3;
+          foods.slice(start,start + 3).forEach(([name],offset) => {
+            const b = button(name);
+            b.className = "ingredient";
+            b.dataset.name = name;
+            b.append(picture(start + offset),name);
+            b.onclick = () => pick(name,!selected.has(name));
+            shelf.append(b);
+          });
           shelves.append(shelf);
         }
-        find(".page").textContent = (page + 1) + " / 4";
-        updateBasket();
+        find(".page-count").textContent = (page + 1) + " / " + pageTotal;
+        refreshBasket();
       }
 
-      find(".door").onclick = () => {
-        find(".inside").hidden = false;
-        kitchen.classList.add("open");
-        find(".door").disabled = true;
-        find(".food").focus({ preventScroll: true });
-        find(".hint").textContent = "Drag food into your basket, or tap to pick it.";
-      };
-      find(".close").onclick = () => {
-        kitchen.classList.remove("open");
-        find(".inside").hidden = true;
-        find(".door").disabled = false;
-        find(".door").focus();
-        find(".hint").textContent = "Open the fridge to pick more food.";
-      };
-      find(".next").onclick = () => { page = (page + 1) % 4; showShelves(); };
-      find(".prev").onclick = () => { page = (page + 3) % 4; showShelves(); };
+      function turn(step) {
+        page = (page + step + pageTotal) % pageTotal;
+        showShelves();
+      }
+      find(".back").onclick = () => turn(-1);
+      find(".next").onclick = () => turn(1);
 
-      function overBasket(event) {
-        const box = find(".basket").getBoundingClientRect();
-        return event.clientX >= box.left && event.clientX <= box.right &&
-               event.clientY >= box.top && event.clientY <= box.bottom;
+      function setAngle(fraction) {
+        door.style.transform = "rotateY(" + (fraction * 94) + "deg)";
       }
 
-      kitchen.addEventListener("pointerdown", event => {
-        const item = event.target.closest(".food");
+      function settleDoor(open) {
+        door.style.transition = "transform .22s ease-out";
+        setAngle(open ? 1 : 0);
+        door.style.pointerEvents = open ? "none" : "auto";
+        door.tabIndex = open ? -1 : 0;
+        door.setAttribute("aria-expanded",String(open));
+        find(".interior").inert = !open;
+        if (open) find(".ingredient").focus({preventScroll:true});
+        else door.focus({preventScroll:true});
+        find(".game-hint").textContent = open
+          ? "Drag food into the bin. Tap a bin item to take it out."
+          : "Grab the lower handle and pull right →";
+      }
+      door.onclick = () => settleDoor(true);
+      find(".shut").onclick = () => settleDoor(false);
+
+      function overBin(event) {
+        const r = bin.getBoundingClientRect();
+        return event.clientX >= r.left && event.clientX <= r.right &&
+               event.clientY >= r.top && event.clientY <= r.bottom;
+      }
+
+      game.addEventListener("pointerdown",event => {
+        const item = event.target.closest(".fridge-door,.ingredient");
         if (!item || drag || event.button !== 0) return;
-        drag = { item, id: event.pointerId, x: event.clientX, y: event.clientY };
+        drag = {item,id:event.pointerId,x:event.clientX,y:event.clientY,progress:0,moved:false};
         item.setPointerCapture(event.pointerId);
+        door.style.transition = "none";
       });
 
-      kitchen.addEventListener("pointermove", event => {
-        if (!drag || drag.id !== event.pointerId) return;
-        if (!drag.icon && Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 6) return;
+      game.addEventListener("pointermove",event => {
+        if (!drag || event.pointerId !== drag.id) return;
+        const dx = event.clientX - drag.x;
+        const dy = event.clientY - drag.y;
+        if (!drag.moved && Math.hypot(dx,dy) < 5) return;
+        drag.moved = true;
+
+        if (drag.item === door) {
+          const width = find(".compartment").clientWidth;
+          drag.progress = Math.min(1,Math.max(0,dx / (width * .7)));
+          setAngle(drag.progress);
+          return;
+        }
+
         if (!drag.icon) {
-          drag.icon = document.createElement("span");
-          drag.icon.className = "drag-food";
-          drag.icon.textContent = foods[Number(drag.item.dataset.index)][1];
-          kitchen.append(drag.icon);
+          drag.icon = picture(names.indexOf(drag.item.dataset.name));
+          drag.icon.classList.add("drag-picture");
+          game.append(drag.icon);
         }
         drag.icon.style.left = event.clientX + "px";
         drag.icon.style.top = event.clientY + "px";
-        find(".basket").classList.toggle("over", overBasket(event));
+        bin.classList.toggle("over",overBin(event));
       });
 
-      function finishDrag(event) {
-        if (!drag || drag.id !== event.pointerId) return;
-        const { item, icon } = drag;
+      function release(event) {
+        if (!drag || event.pointerId !== drag.id) return;
+        const finished = drag;
         drag = null;
-        find(".basket").classList.remove("over");
-        if (!icon) return;
-        icon.remove();
-        if (event.type === "pointercancel") return;
+        finished.icon?.remove();
+        bin.classList.remove("over");
+        if (!finished.moved) return;
 
-        // A completed drag also fires a click. Ignore that click so the food stays selected.
-        const ignoreClick = click => click.stopImmediatePropagation();
-        item.addEventListener("click", ignoreClick, { capture: true, once: true });
-        setTimeout(() => item.removeEventListener("click", ignoreClick, true), 0);
-        if (overBasket(event)) selectFood(Number(item.dataset.index), true);
+        const cancelled = event.type === "pointercancel";
+        if (!cancelled) {
+          // Prevent the click after a drop from selecting the same food twice.
+          const block = e => e.stopImmediatePropagation();
+          finished.item.addEventListener("click",block,true);
+          setTimeout(() => finished.item.removeEventListener("click",block,true),0);
+        }
+        if (finished.item === door) {
+          settleDoor(!cancelled && finished.progress > .32);
+        } else if (!cancelled && overBin(event)) {
+          pick(finished.item.dataset.name,true);
+        }
       }
 
-      kitchen.addEventListener("pointerup", finishDrag);
-      kitchen.addEventListener("pointercancel", finishDrag);
+      game.addEventListener("pointerup",release);
+      game.addEventListener("pointercancel",release);
       showShelves();
     })();
   </script>
 </div>
 <!-- Footer: fill in your name -->
-<footer>Built by YOUR NAME &middot; BMIS 235</footer>
+<footer>Built by Kayson Larson &middot; BMIS 235</footer>
 
 </body>
 </html>
