@@ -36,8 +36,341 @@
      This box is empty on purpose. In Part 7 you paste an interactive
      graphic BETWEEN the opening <div> and the closing </div> below.
      ===================================================================== -->
-<div class="showcase"></div>
+<div class="showcase">
+  <!-- HTML: fridge, ingredient shelves, and selection basket -->
+  <section class="kitchen" aria-label="Fridge Raid ingredient picker">
+    <div class="scene">
+      <div class="fridge">
+        <div class="inside" hidden>
+          <div class="light"></div>
+          <div class="shelves"></div>
+          <div class="controls">
+            <button type="button" class="prev" aria-label="Previous shelves">‹</button>
+            <span class="page"></span>
+            <button type="button" class="next" aria-label="Next shelves">›</button>
+          </div>
+          <button type="button" class="close">Close fridge</button>
+        </div>
 
+        <button type="button" class="door" aria-label="Open fridge">
+          <span class="brand">Fridge Raid</span>
+          <span class="note">what’s for<br>dinner?</span>
+          <span class="handle"></span>
+          <span class="open-label">Open fridge ›</span>
+        </button>
+      </div>
+
+      <div class="basket">
+        <strong>My basket</strong>
+        <span class="count">Drop food here</span>
+        <div class="picked"></div>
+      </div>
+    </div>
+    <div class="hint" aria-live="polite">Open the fridge to get started.</div>
+  </section>
+
+  <!-- CSS: kitchen colors, opening door, shelves, and basket -->
+  <style>
+    .showcase .kitchen {
+      max-width: 620px;
+      margin: 12px auto;
+      overflow: hidden;
+      border: 3px solid #554639;
+      border-radius: 20px;
+      background: #fff5dd;
+      color: #493b32;
+      font: bold 15px/1.2 "Trebuchet MS", sans-serif;
+    }
+    .showcase .kitchen * { box-sizing: border-box; }
+    .showcase .kitchen [hidden] { display: none; }
+    .showcase .scene {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 12px;
+      padding: 14px 10px;
+      align-items: end;
+      background:
+        linear-gradient(to top, #c99670 0 13%, transparent 13%),
+        repeating-linear-gradient(90deg, #faead7 0 32px, #eedbc6 32px 34px);
+    }
+    .showcase .fridge {
+      position: relative;
+      height: 320px;
+      perspective: 800px;
+      border: 3px solid #52685b;
+      border-radius: 20px;
+      background: #cbded1;
+      box-shadow: 3px 4px #725e4b44;
+    }
+    .showcase .door {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      border: 0;
+      border-radius: 16px;
+      color: #354e43;
+      background: linear-gradient(110deg, #d8efd7, #a4cbb3 75%, #84ad99);
+      box-shadow: inset 3px 3px #eff7df, inset -3px -3px #79a58f;
+      cursor: pointer;
+      transform-origin: left;
+      transition: transform .4s, opacity .4s;
+    }
+    .showcase .kitchen.open .door {
+      transform: rotateY(-95deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .showcase .brand {
+      position: absolute;
+      top: 12%; left: 10%;
+      font: bold italic clamp(17px, 4vw, 28px) Georgia, serif;
+    }
+    .showcase .note {
+      position: absolute;
+      top: 38%; left: 14%;
+      padding: 12px 8px 7px;
+      transform: rotate(-8deg);
+      background: #ffe4a2;
+      box-shadow: 2px 3px #52735e44;
+      font: italic 16px Georgia, serif;
+    }
+    .showcase .note::before {
+      content: "";
+      position: absolute;
+      top: -5px; left: 42%;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      background: #d86450;
+    }
+    .showcase .handle {
+      position: absolute;
+      top: 40%; right: 10%;
+      height: 60px; width: 11px;
+      border: 2px solid #59675b;
+      border-radius: 7px;
+      background: #fff0cc;
+    }
+    .showcase .open-label {
+      position: absolute;
+      bottom: 10%; left: 0;
+      width: 100%;
+      font: bold 14px "Trebuchet MS", sans-serif;
+    }
+    .showcase .inside { padding: 8px 6px; text-align: center; }
+    .showcase .light {
+      width: 34px; height: 6px;
+      margin: 0 auto;
+      border-radius: 6px;
+      background: #fffbc7;
+      box-shadow: 0 1px 10px #fff9aa;
+    }
+    .showcase .shelf {
+      height: 74px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: end;
+      border-bottom: 5px solid #83ab9c;
+      box-shadow: 0 2px #59776a;
+    }
+    .showcase .food {
+      padding: 2px 0;
+      border: 0;
+      background: transparent;
+      color: #413b34;
+      font: bold 12px/1.1 "Trebuchet MS", sans-serif;
+      touch-action: none;
+      user-select: none;
+      cursor: grab;
+    }
+    .showcase .food .art { display: block; font-size: 32px; }
+    .showcase .food[aria-pressed="true"] { opacity: .45; }
+    .showcase .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin: 9px 0 4px;
+    }
+    .showcase .controls button, .showcase .close {
+      background: #fff5db;
+      border: 1px solid #859486;
+      border-radius: 7px;
+      color: #493b32;
+      cursor: pointer;
+    }
+    .showcase .controls button { width: 30px; font-size: 18px; }
+    .showcase .basket {
+      text-align: center;
+      padding: 9px 5px;
+      border: 3px solid #79523e;
+      border-radius: 10px 10px 24px 24px;
+      background: repeating-linear-gradient(#efaf80 0 13px, #df976c 13px 15px);
+    }
+    .showcase .basket::before {
+      content: "";
+      display: block;
+      width: 60%; height: 27px;
+      margin: -39px auto 8px;
+      border: 5px solid #885f49;
+      border-bottom: 0;
+      border-radius: 35px 35px 0 0;
+    }
+    .showcase .basket.over { background: #ffdf94; outline: 3px dashed #684a34; }
+    .showcase .count { display: block; margin: 4px; font-size: 12px; }
+    .showcase .picked { height: 114px; overflow-y: auto; }
+    .showcase .picked button {
+      margin: 2px;
+      padding: 2px;
+      border: 0;
+      border-radius: 6px;
+      background: #fff2d9;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .showcase .hint { padding: 9px; text-align: center; font-size: 13px; }
+    .showcase .drag-food {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      font-size: 40px;
+      transform: translate(-50%, -65%);
+    }
+  </style>
+
+  <!-- JavaScript: move between shelves and drag or tap food into the basket -->
+  <script>
+    (() => {
+      const kitchen = document.currentScript.parentElement.querySelector(".kitchen");
+      const find = selector => kitchen.querySelector(selector);
+      const foods = [
+        ["Eggs","🥚"], ["Cheese","🧀"], ["Milk","🥛"], ["Butter","🧈"], ["Yogurt","🥣"], ["Berries","🫐"],
+        ["Spinach","🥬"], ["Tomatoes","🍅"], ["Avocado","🥑"], ["Bananas","🍌"], ["Chicken","🍗"], ["Bacon","🥓"],
+        ["Sausage","🌭"], ["Ground beef","🥩"], ["Tortillas","🫓"], ["Bread","🍞"], ["Bagels","🥯"], ["Rice","🍚"],
+        ["Pasta","🍝"], ["Peanut butter","🥜"], ["Jam","🫙"], ["Soy sauce","🍶"], ["Hot sauce","🌶️"], ["Marinara sauce","🥫"]
+      ];
+      const selected = new Set();
+      let page = 0;
+      let drag = null;
+
+      function updateBasket() {
+        const picked = find(".picked");
+        picked.replaceChildren();
+        for (const index of selected) {
+          const [name, icon] = foods[index];
+          const item = document.createElement("button");
+          item.type = "button";
+          item.textContent = icon;
+          item.title = "Remove " + name;
+          item.setAttribute("aria-label", item.title);
+          item.onclick = () => selectFood(index, false);
+          picked.append(item);
+        }
+        find(".count").textContent = selected.size ? selected.size + " selected" : "Drop food here";
+        kitchen.querySelectorAll(".food").forEach(item => {
+          item.setAttribute("aria-pressed", selected.has(Number(item.dataset.index)));
+        });
+      }
+
+      function selectFood(index, add) {
+        if (add) selected.add(index);
+        else selected.delete(index);
+        updateBasket();
+        find(".hint").textContent = foods[index][0] + (add ? " added to your basket." : " removed.");
+      }
+
+      function showShelves() {
+        const shelves = find(".shelves");
+        shelves.replaceChildren();
+        for (let row = 0; row < 3; row++) {
+          const shelf = document.createElement("div");
+          shelf.className = "shelf";
+          for (let column = 0; column < 2; column++) {
+            const index = page * 6 + row * 2 + column;
+            const [name, icon] = foods[index];
+            const item = document.createElement("button");
+            item.type = "button";
+            item.className = "food";
+            item.dataset.index = index;
+            const art = document.createElement("span");
+            art.className = "art";
+            art.setAttribute("aria-hidden", "true");
+            art.textContent = icon;
+            item.append(art, name);
+            item.onclick = () => selectFood(index, !selected.has(index));
+            shelf.append(item);
+          }
+          shelves.append(shelf);
+        }
+        find(".page").textContent = (page + 1) + " / 4";
+        updateBasket();
+      }
+
+      find(".door").onclick = () => {
+        find(".inside").hidden = false;
+        kitchen.classList.add("open");
+        find(".door").disabled = true;
+        find(".food").focus({ preventScroll: true });
+        find(".hint").textContent = "Drag food into your basket, or tap to pick it.";
+      };
+      find(".close").onclick = () => {
+        kitchen.classList.remove("open");
+        find(".inside").hidden = true;
+        find(".door").disabled = false;
+        find(".door").focus();
+        find(".hint").textContent = "Open the fridge to pick more food.";
+      };
+      find(".next").onclick = () => { page = (page + 1) % 4; showShelves(); };
+      find(".prev").onclick = () => { page = (page + 3) % 4; showShelves(); };
+
+      function overBasket(event) {
+        const box = find(".basket").getBoundingClientRect();
+        return event.clientX >= box.left && event.clientX <= box.right &&
+               event.clientY >= box.top && event.clientY <= box.bottom;
+      }
+
+      kitchen.addEventListener("pointerdown", event => {
+        const item = event.target.closest(".food");
+        if (!item || drag || event.button !== 0) return;
+        drag = { item, id: event.pointerId, x: event.clientX, y: event.clientY };
+        item.setPointerCapture(event.pointerId);
+      });
+
+      kitchen.addEventListener("pointermove", event => {
+        if (!drag || drag.id !== event.pointerId) return;
+        if (!drag.icon && Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 6) return;
+        if (!drag.icon) {
+          drag.icon = document.createElement("span");
+          drag.icon.className = "drag-food";
+          drag.icon.textContent = foods[Number(drag.item.dataset.index)][1];
+          kitchen.append(drag.icon);
+        }
+        drag.icon.style.left = event.clientX + "px";
+        drag.icon.style.top = event.clientY + "px";
+        find(".basket").classList.toggle("over", overBasket(event));
+      });
+
+      function finishDrag(event) {
+        if (!drag || drag.id !== event.pointerId) return;
+        const { item, icon } = drag;
+        drag = null;
+        find(".basket").classList.remove("over");
+        if (!icon) return;
+        icon.remove();
+        if (event.type === "pointercancel") return;
+
+        // A completed drag also fires a click. Ignore that click so the food stays selected.
+        const ignoreClick = click => click.stopImmediatePropagation();
+        item.addEventListener("click", ignoreClick, { capture: true, once: true });
+        setTimeout(() => item.removeEventListener("click", ignoreClick, true), 0);
+        if (overBasket(event)) selectFood(Number(item.dataset.index), true);
+      }
+
+      kitchen.addEventListener("pointerup", finishDrag);
+      kitchen.addEventListener("pointercancel", finishDrag);
+      showShelves();
+    })();
+  </script>
+</div>
 <!-- Footer: fill in your name -->
 <footer>Built by YOUR NAME &middot; BMIS 235</footer>
 
