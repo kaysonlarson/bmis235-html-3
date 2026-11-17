@@ -29,7 +29,65 @@
 </nav>
 
 <a href="index.html">← Back to my fridge</a>
+  
+<div id="recipe-results" aria-live="polite"></div>
+<button type="button" id="more-recipes" hidden>Give me another idea</button>
 
+<script src="recipe-generator.js"></script>
+<script>
+  (() => {
+    const results = document.getElementById("recipe-results");
+    const more = document.getElementById("more-recipes");
+    let remaining = [];
+
+    function showNext(count) {
+      for (const recipe of remaining.splice(0, count)) {
+        const card = document.createElement("article");
+        const title = document.createElement("h2");
+        const ingredients = document.createElement("p");
+        const steps = document.createElement("ol");
+
+        title.textContent = recipe.name;
+        ingredients.textContent = "You'll use: " + recipe.foods.join(", ");
+
+        for (const instruction of recipe.steps) {
+          const step = document.createElement("li");
+          step.textContent = instruction;
+          steps.append(step);
+        }
+
+        card.append(title, ingredients, steps);
+        results.append(card);
+      }
+      more.hidden = remaining.length === 0;
+    }
+
+    function loadRecipes() {
+      let foods = [];
+      try {
+        const saved = JSON.parse(localStorage.getItem("fridge-raid-ingredients-v1") || "[]");
+        if (Array.isArray(saved)) foods = saved.filter(item => typeof item === "string");
+      } catch {}
+
+      results.replaceChildren();
+      remaining = generateRecipes(foods);
+
+      // Shuffle once so the button reveals new ideas without repeating them.
+      for (let i = remaining.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+      }
+
+      if (foods.length && !remaining.length) {
+        results.textContent = "No recipe for this combination yet. Try eggs with tortillas, bread, or rice.";
+      }
+      showNext(2);
+    }
+
+    more.addEventListener("click", () => showNext(1));
+    window.addEventListener("pageshow", loadRecipes);
+  })();
+</script>
 <script>
   function showIngredients() {
     const summary = document.getElementById("basket-summary");
