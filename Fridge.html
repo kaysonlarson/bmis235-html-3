@@ -57,6 +57,44 @@
 
 <!-- Footer: fill in your name -->
 <footer>Built by Kayson Larson &middot; BMIS 235</footer>
+<script>
+  const fridgeKey = "fridge-raid-ingredients-v1";
+  const boxes = document.querySelectorAll('input[type="checkbox"][value]');
 
+  function readBin() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(fridgeKey) || "[]");
+      return new Set(Array.isArray(saved) ? saved : []);
+    } catch {
+      return new Set();
+    }
+  }
+
+  function foodName(box) {
+    // Match the game's names: "ground-beef" becomes "Ground beef".
+    const name = box.value.replaceAll("-", " ").toLowerCase();
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
+  function syncChecklist() {
+    const bin = readBin();
+    boxes.forEach(box => {
+      box.checked = bin.has(foodName(box));
+    });
+  }
+
+  boxes.forEach(box => {
+    box.addEventListener("change", () => {
+      const bin = readBin();
+      const name = foodName(box);
+      if (box.checked) bin.add(name);
+      else bin.delete(name);
+      localStorage.setItem(fridgeKey, JSON.stringify([...bin]));
+    });
+  });
+
+  window.addEventListener("pageshow", syncChecklist);
+  window.addEventListener("storage", syncChecklist);
+</script>
 </body>
 </html>
