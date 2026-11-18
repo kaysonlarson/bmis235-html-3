@@ -57,3 +57,12 @@ footer {
     color: #777777;
     margin-top: 40px;
 }
+.grocery-page h1,
+.grocery-page h2 {
+  text-align: center;
+  color: #493b32;
+}
+
+.grocery-page h2 {
+  margin-top: 2rem;
+}
