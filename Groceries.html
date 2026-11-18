@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="author" content="Kayson Larson">
-<title>Page 3</title>
+<title>Grocery List</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -26,12 +26,115 @@
     <a href="Groceries.html"><img src="img/page3.png" alt="Page 3"></a>
 </nav>
 
-<h1>Page 3</h1>
-<p>This is page 3. It covers the third part of your idea.</p>
-<p>Write about it here.</p>
+<h1>Grocery List</h1>
+<p id="grocery-bin"></p>
 
-<!-- Footer: fill in your name -->
-<footer>Built by YOUR NAME &middot; BMIS 235</footer>
+<h2>One ingredient away</h2>
+<div id="suggestions"></div>
 
-</body>
-</html>
+<h2>My shopping list</h2>
+<p id="list-status" aria-live="polite"></p>
+<ul id="shopping-list"></ul>
+
+<script src="recipe-generator.js"></script>
+<script>
+  (() => {
+    const binKey = "fridge-raid-ingredients-v1";
+    const listKey = "fridge-raid-shopping-v1";
+
+    const allFoods = [
+      "Eggs", "Cheese", "Tortillas", "Spinach", "Tomatoes", "Rice",
+      "Milk", "Butter", "Pasta", "Chicken", "Bacon", "Sausage",
+      "Ground beef", "Yogurt", "Bread", "Bagels", "Bananas", "Avocado",
+      "Berries", "Peanut butter", "Jam", "Soy sauce", "Hot sauce",
+      "Marinara sauce"
+    ];
+
+    function readFoods(key) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(key) || "[]");
+        return Array.isArray(saved) ? allFoods.filter(food => saved.includes(food)) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function makeButton(label, action) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = label;
+      button.onclick = action;
+      return button;
+    }
+
+    function changeList(food, add) {
+      const list = new Set(readFoods(listKey));
+      if (add) list.add(food);
+      else list.delete(food);
+
+      try {
+        localStorage.setItem(listKey, JSON.stringify([...list]));
+        render();
+      } catch {
+        document.getElementById("list-status").textContent =
+          "Your browser couldn't save the shopping list.";
+      }
+    }
+
+    function render() {
+      const bin = readFoods(binKey);
+      const list = readFoods(listKey);
+      const suggestions = document.getElementById("suggestions");
+      const shopping = document.getElementById("shopping-list");
+
+      suggestions.replaceChildren();
+      shopping.replaceChildren();
+
+      document.getElementById("grocery-bin").textContent = bin.length
+        ? "In your bin: " + bin.join(", ")
+        : "Pick some food on Home or My Fridge to see what one more ingredient could unlock.";
+
+      const currentMeals = new Set(generateRecipes(bin).map(recipe => recipe.name));
+
+      if (bin.length) {
+        for (const food of allFoods) {
+          if (bin.includes(food)) continue;
+
+          const newMeal = generateRecipes([...bin, food]).find(recipe =>
+            !currentMeals.has(recipe.name) &&
+            recipe.foods.includes(food.toLowerCase())
+          );
+          if (!newMeal) continue;
+
+          const row = document.createElement("p");
+          row.append(`${food} → ${newMeal.name} `);
+
+          if (list.includes(food)) {
+            row.append("✓ On your list");
+          } else {
+            row.append(makeButton(`Add ${food.toLowerCase()}`, () => changeList(food, true)));
+          }
+          suggestions.append(row);
+        }
+
+        if (!suggestions.children.length) {
+          suggestions.textContent =
+            "No one-ingredient suggestions for this bin yet.";
+        }
+      }
+
+      document.getElementById("list-status").textContent = list.length
+        ? `${list.length} ${list.length === 1 ? "item" : "items"} on your list.`
+        : "Your shopping list is empty.";
+
+      for (const food of list) {
+        const item = document.createElement("li");
+        item.append(food + " ", makeButton(`Remove ${food.toLowerCase()}`, () => changeList(food, false)));
+        shopping.append(item);
+      }
+    }
+
+    window.addEventListener("pageshow", render);
+    window.addEventListener("storage", render);
+  })();
+</script>
