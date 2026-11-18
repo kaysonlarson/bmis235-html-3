@@ -83,3 +83,34 @@ footer {
 .ingredient-grid br {
   display: none;
 }
+.ingredient-grid label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 6px 10px;
+  border: 2px solid #c5bba9;
+  border-radius: 12px;
+  background: #fff8e9;
+  color: #493b32;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.ingredient-grid input {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: #356448;
+}
+
+.ingredient-grid label:has(input:checked) {
+  background: #b8d8c0;
+  border-color: #52765b;
+}
+
+.ingredient-grid label:focus-within {
+  outline: 2px solid #356448;
+  outline-offset: 2px;
+}
