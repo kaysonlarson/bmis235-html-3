@@ -153,3 +153,7 @@ nav a:focus-visible {
 h1, h2 {
   color: #493b32;
 }
+body > nav {
+  background: transparent;
+  border: 0;
+}
