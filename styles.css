@@ -114,3 +114,42 @@ footer {
   outline: 2px solid #356448;
   outline-offset: 2px;
 }
+body {
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  background-color: #fff8e9;
+  color: #493b32;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 10px;
+  background-color: #dcecf2;
+  border-bottom: 3px solid #aac6d1;
+}
+
+nav a {
+  display: block;
+  border-radius: 8px;
+}
+
+nav img {
+  display: block;
+  width: clamp(95px, 17vw, 145px);
+  height: auto;
+  margin: 0;
+  border-radius: 8px;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  outline: 3px solid #52765b;
+  outline-offset: 2px;
+}
+
+h1, h2 {
+  color: #493b32;
+}
