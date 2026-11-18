@@ -89,10 +89,17 @@
       const name = foodName(box);
       if (box.checked) bin.add(name);
       else bin.delete(name);
-      localStorage.setItem(fridgeKey, JSON.stringify([...bin]));
+     try {
+  localStorage.setItem(fridgeKey, JSON.stringify([...bin]));
+  const saved = [...readBin()];
+  document.querySelector("h1 + p").textContent =
+    saved.length ? "Saved in your bin: " + saved.join(", ") : "Your bin is empty.";
+} catch {
+  document.querySelector("h1 + p").textContent =
+    "Your browser couldn't save this selection.";
+}
     });
   });
-
   window.addEventListener("pageshow", syncChecklist);
   window.addEventListener("storage", syncChecklist);
 </script>
